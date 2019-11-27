@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>SaveYourCar</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <style>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+  </style>
+</head>
+<body>
+ <nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+        <img class="icon-bar" src="{{ url_for('static', filename='logo.png') }}">
+    </div>
+      {% if current_user.is_authenticated %}
+       <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav">
+            <li><a href="{{ url_for('main.home') }}">Home</a></li>
+            <li><a href="#">Nuova Auto</a></li>
+            <li><a href="#">Auto</a></li>
+            <li><a href="#">Account</a></li>
+        </ul>
+       </div>
+                   <!-- Navbar Right Side -->
+            <div class="navbar-nav">
+                <ul class="nav navbar-nav navbar-right">
+                  <li><a href="{{ url_for('users.logout') }}"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+                </ul>
+            </div>
+      {% else %}
+       <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav">
+            <li><a href="{{ url_for('main.home') }}">Home</a></li>
+            <li><a href="{{ url_for('users.register') }}">Registrazione</a></li>
+            <li><a href="#">Contatti</a></li>
+        </ul>
+       </div>
+            <!-- Navbar Right Side -->
+            <div class="navbar-nav">
+                <ul class="nav navbar-nav navbar-right">
+                  <li><a href="{{ url_for('users.login') }}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                </ul>
+            </div>
+      {% endif %}  
+  </div>
+ </nav>
+    <main role="main" class="container">
+      <div class="row">
+        <div class="col-md-8">
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+          {% block content %}{% endblock %}
+        </div>
+      </div>
+    </main>
+ <footer class="container-fluid text-center">
+  <p></p>
+ </footer>
+</body>
+</html>
