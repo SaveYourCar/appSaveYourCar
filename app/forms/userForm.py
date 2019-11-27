@@ -3,7 +3,7 @@ from flask_wtf.file import FileField, FileAllowed
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from flask_login import current_user
-from app.models.modelUsers import User
+from app.models.modelUsers import User, UserLogin
 
 
 class RegistrationForm(FlaskForm):
@@ -22,7 +22,7 @@ class RegistrationForm(FlaskForm):
             raise ValidationError('Questa username non è disponibile. Per piacere scegline un''altra.')
 
     def validate_email(self, email):
-        user = User.query.filter_by(email=email.data).first()
+        user = UserLogin.query.filter_by(email=email.data).first()
         if user:
             raise ValidationError('Questa mail è già presente. Per piacere scegline un''altra.')
 
