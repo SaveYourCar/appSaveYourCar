@@ -2,7 +2,7 @@ from flask import render_template, url_for, flash, redirect, request, Blueprint
 from flask_login import login_user, current_user, logout_user, login_required
 from app.forms.userForm import LoginForm, RegistrationForm
 from app import db, login_manager, bcrypt
-from app.models.modelUsers import User
+from app.models.modelUsers import User, UserLogin
 from app.models.modelCars import Car
 
 users = Blueprint('users', __name__)
@@ -14,8 +14,10 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        user = User(username=form.username.data, email=form.email.data, password=hashed_password)
+        user = User(username=form.username.data)
+        user_login = UserLogin(email=form.email.data, password=hashed_password, id_user=user.id)
         db.session.add(user)
+        db.session.add(user_login)
         db.session.commit()
         flash('Il tuo account è stato creato! Ora puoi effettuare il log in', 'success')
         return redirect(url_for('users.login'))
