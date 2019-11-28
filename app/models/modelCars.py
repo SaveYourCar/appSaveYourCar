@@ -7,9 +7,6 @@ class CarData(db.Model):
     dataType = db.Column(db.Boolean(), nullable=False)
     carDataValues = db.relationship('CarDataValue', backref='category', lazy=True)
 
-    def __repr__(self):
-        return f"CarData('{self.carData}', '{self.dataType}')"
-
 class Car(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
@@ -19,9 +16,6 @@ class Car(db.Model):
     id_user = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     carDataValues = db.relationship('CarDataValue', backref='car_author', lazy=True)
     
-    def __repr__(self):
-        return f"Car('{self.name}', '{self.matriculation}', '{self.fuel}','{self.image_file}', {self.carDataValues}')"
-
 class CarDataValue(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     valueInt = db.Column(db.Integer, nullable=True)
@@ -29,5 +23,3 @@ class CarDataValue(db.Model):
     id_CarData = db.Column(db.Integer, db.ForeignKey('car_data.id'), nullable=False)
     id_Car = db.Column(db.Integer, db.ForeignKey('car.id'), nullable=False)
  
-    def __repr__(self):
-        return f"Car('{self.valueInt}', '{self.valueDate}')"
