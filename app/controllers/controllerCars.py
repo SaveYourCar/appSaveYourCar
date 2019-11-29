@@ -8,16 +8,19 @@ from app.controllers.utilsCars import *
 
 cars = Blueprint('cars', __name__)
 
-@cars.route('/auto')
+
+@cars.route('/auto', methods=['GET', 'POST'])
+@login_required
 def auto():
-    return "Lista Auto"
+    return render_template('lista_auto.html', title='Auto',
+                           car=current_user.cars)
 
 @cars.route("/car/new_car", methods=['GET', 'POST'])
 @login_required
 def new_car():
     form = CarForm()
     if form.validate_on_submit():
-       car = Car(name=form.name.data, fuel= form.fuel.data,
+       car = Car(name=form.name.data, fuel=form.fuel.data,
                  matriculation=form.matriculation.data, author=current_user)
        db.session.add(car)
        AddCarValueToDb(car,form)
