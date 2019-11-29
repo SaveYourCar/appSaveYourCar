@@ -31,8 +31,8 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         userLogin = UserLogin.query.filter_by(email=form.email.data).first()
-        user = user = User.query.filter_by(id=userLogin.id).first()
         if userLogin and bcrypt.check_password_hash(userLogin.password, form.password.data):
+            user = User.query.filter_by(id=userLogin.id).first()
             login_user(user, remember=form.remember.data)
             next_page = request.args.get('next')
             return redirect(next_page) if next_page else redirect(url_for('main.home'))
